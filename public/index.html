@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b16">
+  <meta name="description" content="KOREXIA-MD Enterprise Control Center">
+  <title>KOREXIA-MD — Enterprise</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo">K</div>
+        <div>
+          <strong>KOREXIA</strong>
+          <span>MD ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-item active" data-section="dashboard">
+          <span>⌂</span> Dashboard
+        </button>
+
+        <button class="nav-item" data-section="whatsapp">
+          <span>◉</span> WhatsApp
+        </button>
+
+        <button class="nav-item" data-section="groups">
+          <span>♙</span> Groups
+        </button>
+
+        <button class="nav-item" data-section="commands">
+          <span>⚡</span> Commands
+        </button>
+
+        <button class="nav-item" data-section="security">
+          <span>◈</span> Security
+        </button>
+
+        <button class="nav-item" data-section="monitoring">
+          <span>▥</span> Monitoring
+        </button>
+
+        <button class="nav-item" data-section="logs">
+          <span>▤</span> Logs
+        </button>
+
+        <button class="nav-item" data-section="settings">
+          <span>⚙</span> Settings
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="system-mini">
+          <span class="online-dot"></span>
+          <div>
+            <strong>System Online</strong>
+            <small>KOREXIA-MD V10</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <div class="page-title">
+          <span id="sectionLabel">Dashboard</span>
+          <small>Enterprise Control Center</small>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-btn" title="Notifications">♢</button>
+          <div class="status-pill">
+            <span class="online-dot"></span>
+            <span>Online</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="section active" id="dashboard">
+
+        <div class="hero">
+          <div>
+            <div class="eyebrow">KOREXIA-MD V10</div>
+            <h1>Control your WhatsApp bot.</h1>
+            <p>
+              Manage your connection, groups, commands and security
+              from one professional control center.
+            </p>
+          </div>
+
+          <div class="hero-status">
+            <span class="pulse"></span>
+            <div>
+              <strong>Operational</strong>
+              <small>All systems running</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">◉</div>
+            <span>Connection</span>
+            <strong>ONLINE</strong>
+            <small>WhatsApp connected</small>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">♙</div>
+            <span>Groups</span>
+            <strong id="groupCount">—</strong>
+            <small>Managed groups</small>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <span>Commands</span>
+            <strong id="commandCount">—</strong>
+            <small>Available commands</small>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">◈</div>
+            <span>Security</span>
+            <strong>ACTIVE</strong>
+            <small>Protection systems</small>
+          </div>
+        </div>
+
+        <div class="content-grid">
+
+          <div class="panel pairing-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">WHATSAPP</span>
+                <h2>Pair your device</h2>
+              </div>
+              <span class="badge">PAIRING</span>
+            </div>
+
+            <p class="muted">
+              Enter your WhatsApp number to generate a pairing code.
+            </p>
+
+            <div class="input-group">
+              <label for="number">Phone number</label>
+              <input
+                type="tel"
+                id="number"
+                placeholder="+243xxxxxxxxx"
+                autocomplete="tel"
+              >
+            </div>
+
+            <button class="primary-btn" id="generateBtn">
+              <span>Generate Pairing Code</span>
+              <b>→</b>
+            </button>
+
+            <div class="pair-result" id="result">
+              <span class="result-label">PAIRING CODE</span>
+              <strong>----</strong>
+              <small>Your code will appear here</small>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">SYSTEM</span>
+                <h2>Health</h2>
+              </div>
+              <span class="healthy">● Healthy</span>
+            </div>
+
+            <div class="health-list">
+              <div>
+                <span>WhatsApp</span>
+                <strong>Connected</strong>
+              </div>
+
+              <div>
+                <span>Bot Engine</span>
+                <strong>Running</strong>
+              </div>
+
+              <div>
+                <span>Plugins</span>
+                <strong>Loaded</strong>
+              </div>
+
+              <div>
+                <span>Storage</span>
+                <strong>Ready</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel activity">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow">ACTIVITY</span>
+              <h2>Recent activity</h2>
+            </div>
+          </div>
+
+          <div class="activity-list">
+            <div class="activity-item">
+              <span class="activity-dot"></span>
+              <div>
+                <strong>Control Center initialized</strong>
+                <small>KOREXIA-MD V10</small>
+              </div>
+              <time>Now</time>
+            </div>
+
+            <div class="activity-item">
+              <span class="activity-dot"></span>
+              <div>
+                <strong>Bot engine ready</strong>
+                <small>All plugins available</small>
+              </div>
+              <time>Ready</time>
+            </div>
+
+            <div class="activity-item">
+              <span class="activity-dot"></span>
+              <div>
+                <strong>Security systems enabled</strong>
+                <small>Group protection</small>
+              </div>
+              <time>Active</time>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHATSAPP -->
+      <section class="section" id="whatsapp">
+        <div class="section-heading">
+          <span class="eyebrow">WHATSAPP</span>
+          <h1>Connection</h1>
+          <p>Manage the WhatsApp connection and pairing process.</p>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">PAIRING</span>
+                <h2>Device pairing</h2>
+              </div>
+              <span class="badge">SECURE</span>
+            </div>
+
+            <div class="input-group">
+              <label for="number2">WhatsApp number</label>
+              <input type="tel" id="number2" placeholder="+243xxxxxxxxx">
+            </div>
+
+            <button class="primary-btn" id="generateBtn2">
+              Generate Pairing Code
+              <b>→</b>
+            </button>
+
+            <div class="pair-result compact" id="result2">
+              <span class="result-label">CODE</span>
+              <strong>----</strong>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">STATUS</span>
+                <h2>Connection status</h2>
+              </div>
+            </div>
+
+            <div class="big-status">
+              <span class="pulse"></span>
+              <strong>ONLINE</strong>
+              <small>Bot connection is operational</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GROUPS -->
+      <section class="section" id="groups">
+        <div class="section-heading">
+          <span class="eyebrow">MANAGEMENT</span>
+          <h1>Groups</h1>
+          <p>Group management will use your existing bot data.</p>
+        </div>
+
+        <div class="panel empty-panel">
+          <div class="empty-icon">♙</div>
+          <h2>Group Center</h2>
+          <p>
+            The interface is ready to connect to your existing group
+            management system without modifying the bot engine.
+          </p>
+        </div>
+      </section>
+
+      <!-- COMMANDS -->
+      <section class="section" id="commands">
+        <div class="section-heading">
+          <span class="eyebrow">BOT</span>
+          <h1>Command Center</h1>
+          <p>Organize and monitor your KOREXIA-MD commands.</p>
+        </div>
+
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="commandSearch" type="search" placeholder="Search commands...">
+        </div>
+
+        <div class="command-grid" id="commandGrid">
+          <div class="command-card">
+            <span>⚡</span>
+            <strong>Group Commands</strong>
+            <small>Admin management</small>
+          </div>
+
+          <div class="command-card">
+            <span>◈</span>
+            <strong>Security</strong>
+            <small>Protection systems</small>
+          </div>
+
+          <div class="command-card">
+            <span>🤖</span>
+            <strong>AI</strong>
+            <small>Artificial intelligence</small>
+          </div>
+
+          <div class="command-card">
+            <span>♫</span>
+            <strong>Media</strong>
+            <small>Audio & video</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="section" id="security">
+        <div class="section-heading">
+          <span class="eyebrow">PROTECTION</span>
+          <h1>Security Center</h1>
+          <p>Overview of your existing group protection systems.</p>
+        </div>
+
+        <div class="security-grid">
+          <div class="security-card">
+            <span>🔗</span>
+            <strong>AntiLink</strong>
+            <small>Group protection</small>
+            <b>READY</b>
+          </div>
+
+          <div class="security-card">
+            <span>🛡️</span>
+            <strong>AntiSpam</strong>
+            <small>Flood protection</small>
+            <b>READY</b>
+          </div>
+
+          <div class="security-card">
+            <span>🚫</span>
+            <strong>AntiBadword</strong>
+            <small>Content protection</small>
+            <b>READY</b>
+          </div>
+
+          <div class="security-card">
+            <span>🏷️</span>
+            <strong>AntiTag</strong>
+            <small>Mention protection</small>
+            <b>READY</b>
+          </div>
+        </div>
+      </section>
+
+      <!-- MONITORING -->
+      <section class="section" id="monitoring">
+        <div class="section-heading">
+          <span class="eyebrow">OBSERVABILITY</span>
+          <h1>Monitoring</h1>
+          <p>Monitor the health of the KOREXIA-MD service.</p>
+        </div>
+
+        <div class="monitor-grid">
+          <div class="metric panel">
+            <span>UPTIME</span>
+            <strong>ONLINE</strong>
+            <small>Service running</small>
+          </div>
+
+          <div class="metric panel">
+            <span>BOT ENGINE</span>
+            <strong>READY</strong>
+            <small>Message handler active</small>
+          </div>
+
+          <div class="metric panel">
+            <span>PLUGINS</span>
+            <strong>LOADED</strong>
+            <small>Command system ready</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOGS -->
+      <section class="section" id="logs">
+        <div class="section-heading">
+          <span class="eyebrow">SYSTEM</span>
+          <h1>Logs</h1>
+          <p>System activity and diagnostic information.</p>
+        </div>
+
+        <div class="panel terminal">
+          <div class="terminal-head">
+            <span></span><span></span><span></span>
+            <small>KOREXIA-MD SYSTEM LOG</small>
+          </div>
+
+          <div class="terminal-body">
+            <p><i>[INFO]</i> KOREXIA-MD V10 initialized</p>
+            <p><i>[OK]</i> Plugin system ready</p>
+            <p><i>[OK]</i> Security modules loaded</p>
+            <p><i>[OK]</i> Enterprise panel ready</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="section" id="settings">
+        <div class="section-heading">
+          <span class="eyebrow">CONFIGURATION</span>
+          <h1>Settings</h1>
+          <p>General interface settings.</p>
+        </div>
+
+        <div class="panel settings-list">
+          <div>
+            <div>
+              <strong>Dark interface</strong>
+              <small>Use the enterprise dark theme.</small>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked id="darkMode">
+              <span></span>
+            </label>
+          </div>
+
+          <div>
+            <div>
+              <strong>Animations</strong>
+              <small>Enable interface transitions.</small>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked id="animations">
+              <span></span>
+            </label>
+          </div>
+
+          <div>
+            <div>
+              <strong>System status</strong>
+              <small>Display service status indicators.</small>
+            </div>
+            <span class="healthy">● Active</span>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        KOREXIA-MD V10 Enterprise
+        <span>•</span>
+        WhatsApp Bot Control Center
+      </footer>
+
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

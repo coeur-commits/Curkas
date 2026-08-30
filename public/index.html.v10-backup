@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOREXIA MD</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+<h1>KOREXIA MD</h1>
+<p class="subtitle">NEXT GENERATION WHATSAPP BOT</p>
+
+<div class="card">
+<h2>PAIRING CODE</h2>
+
+<input type="text" id="number" placeholder="+243xxxxxxxxx">
+
+<button onclick="generateCode()">GENERATE CODE</button>
+
+<div id="result">------</div>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Sessions / authentification WhatsApp
+auth/
+session/
+sessions/
+creds/
+baileys_auth_info/
+*.session
+
+# Logs
+logs/
+*.log
+
+# Données runtime
+data/baileys_store.json
+data/*.tmp
+
+# Fichiers temporaires
+tmp/
+temp/
+*.tmp
+
+# Backups locaux
+*.backup
+*.bak
+
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
