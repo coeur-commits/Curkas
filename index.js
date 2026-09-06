@@ -27,7 +27,7 @@ import pino from 'pino';
 import config from './config.js';
 import store from './lib/lightweight_store.js';
 import SaveCreds from './lib/session.js';
-import { server, PORT } from './lib/server.js';
+import { server, PORT, HOST } from './lib/server.js';
 import {
     registerBotStarter,
     updateSession,
@@ -118,8 +118,8 @@ process.on('SIGINT', () => {
         rl.close();
     process.exit(0);
 });
-server.listen(PORT, () => {
-    printLog('success', `Server listening on port ${PORT}`);
+server.listen(PORT, HOST, () => {
+    printLog('success', `Server listening on ${HOST}:${PORT}`);
 });
 async function startQasimDev({
     number = null,
