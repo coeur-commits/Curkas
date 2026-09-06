@@ -27,10 +27,10 @@ function setPairingResult(element, code, message = 'Code generated successfully'
 }
 
 async function generatePairing(numberInput, resultElement, button) {
-  const number = numberInput?.value.trim();
+  const number = numberInput?.value.replace(/\D/g, '');
 
-  if (!number) {
-    showToast('Entre ton numéro WhatsApp.');
+  if (!number || number.length < 8 || number.length > 15) {
+    showToast('Entre un numéro WhatsApp valide.');
     numberInput?.focus();
     return;
   }
@@ -40,52 +40,51 @@ async function generatePairing(numberInput, resultElement, button) {
     button.style.opacity = '.65';
   }
 
-  setPairingResult(resultElement, '...', 'Contacting pairing server...');
+  setPairingResult(resultElement, '...', 'Connexion au serveur de pairing...');
+
+  const apiBase = (window.KOREXIA_API_URL || '').replace(/\/$/, '');
+  const pairUrl = `${apiBase}/api/pair`;
+  const statusUrl = (n) => `${apiBase}/api/pair/status/${encodeURIComponent(n)}`;
 
   try {
-    const response = await fetch(
-      `/pair?number=${encodeURIComponent(number)}`,
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      }
-    );
+    const response = await fetch(pairUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ number })
+    });
 
     const data = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
+    if (!response.ok || data?.success === false) {
       throw new Error(data?.error || `HTTP ${response.status}`);
     }
 
-    if (data?.code) {
+    if (data?.pairingCode) {
       setPairingResult(
         resultElement,
-        data.code,
-        'Use this code in WhatsApp > Linked devices'
+        data.pairingCode,
+        'Utilise ce code dans WhatsApp > Appareils connectés'
       );
-
-      showToast('Pairing code généré avec succès.');
+      showToast('Code de pairing généré avec succès.');
     } else {
       setPairingResult(
         resultElement,
         'ERROR',
-        data?.message || 'No pairing code returned'
+        data?.error || 'Le serveur n’a pas retourné de code.'
       );
-
       showToast('Le serveur n’a pas retourné de code.');
     }
 
+    // Poll only when a session was actually created.
+    if (data?.success) {
+      pollStatus(number, statusUrl);
+    }
   } catch (error) {
     console.error('[PAIRING]', error);
-
-    setPairingResult(
-      resultElement,
-      'ERROR',
-      'Unable to contact pairing server'
-    );
-
+    setPairingResult(resultElement, 'ERROR', error.message || 'Serveur inaccessible');
     showToast('Erreur du serveur de pairing.');
   } finally {
     if (button) {
@@ -93,6 +92,28 @@ async function generatePairing(numberInput, resultElement, button) {
       button.style.opacity = '';
     }
   }
+}
+
+async function pollStatus(number, statusUrl) {
+  try {
+    const response = await fetch(statusUrl(number), {
+      headers: { 'Accept': 'application/json' }
+    });
+    const data = await response.json().catch(() => ({}));
+
+    const resultElement = document.querySelector('#result') || document.querySelector('#result2');
+
+    if (data.status === 'connected') {
+      setPairingResult(resultElement, data.pairingCode || 'CONNECTED', 'WhatsApp connecté.');
+      return;
+    }
+
+    if (data.pairingCode && resultElement) {
+      setPairingResult(resultElement, data.pairingCode, 'Utilise ce code dans WhatsApp > Appareils connectés');
+    }
+  } catch (_) {}
+
+  setTimeout(() => pollStatus(number, statusUrl), 2500);
 }
 
 /* =========================
