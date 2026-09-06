@@ -42,6 +42,8 @@ async function generatePairing(numberInput, resultElement, button) {
 
   setPairingResult(resultElement, '...', 'Connexion au serveur de pairing...');
 
+  // Vercel rewrites /api/* to the Bot-Hosting backend.
+  // KOREXIA_API_URL can still be set when using a direct HTTPS backend.
   const apiBase = (window.KOREXIA_API_URL || '').replace(/\/$/, '');
   const pairUrl = `${apiBase}/api/pair`;
   const statusUrl = (n) => `${apiBase}/api/pair/status/${encodeURIComponent(n)}`;
