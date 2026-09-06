@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/pair",
+      "destination": "http://fi7.bot-hosting.net:20100/api/pair"
+    },
+    {
+      "source": "/api/pair/status/:number",
+      "destination": "http://fi7.bot-hosting.net:20100/api/pair/status/:number"
+    },
+    {
+      "source": "/health",
+      "destination": "http://fi7.bot-hosting.net:20100/health"
+    }
+  ]
+}
