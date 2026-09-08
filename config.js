@@ -4,11 +4,11 @@ const config = {
     // Bot Identity
     botName: process.env.BOT_NAME || 'KØREXIA-MD',
     botOwner: process.env.BOT_OWNER || 'Nsala',
-    ownerNumber: process.env.OWNER_NUMBER || '50931221850',
-    author: process.env.AUTHOR || 'Nsala',
+    ownerNumber: process.env.OWNER_NUMBER || '243906905464',
+    author: process.env.AUTHOR || '𝐊𝐈𝐋𝐋𝐔𝐀',
     packname: process.env.PACKNAME || 'KØREXIA-MD',
     description: process.env.DESCRIPTION || 'High performance multi-device WhatsApp bot',
-    version: '3.0.0',
+    version: '10',
     // Bot Config
     prefixes: _prefixes,
     prefix: _prefixes[0],
@@ -16,7 +16,7 @@ const config = {
     timeZone: process.env.TIMEZONE || 'Asia/Karachi',
     // Links
     channelLink: process.env.CHANNEL_LINK || 'https://whatsapp.com/channel/0029VbCHB1eDjiOUGG4OCS2t',
-    updateZipUrl: process.env.UPDATE_URL || 'https://github.com/cabrin21/KOREXIA-MD_V3/archive/refs/heads/main.zip',
+    updateZipUrl: process.env.UPDATE_URL || 'https://github.com/coeur-commits/Curkas/archive/refs/heads/main.zip',
     ytChannel: process.env.YT_CHANNEL || 'Nsala',
     // Session
     sessionId: process.env.SESSION_ID || '',
