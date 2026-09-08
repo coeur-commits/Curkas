@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import syntaxerror from 'syntax-error';
 import { parsePhoneNumber as PhoneNumber } from 'awesome-phonenumber';
 import readline from 'readline';
+import os from 'os';
 import QRCode from 'qrcode';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -30,8 +31,13 @@ import SaveCreds from './lib/session.js';
 import { server, PORT, HOST } from './lib/server.js';
 import {
     registerBotStarter,
+    registerBotController,
     updateSession,
-    getSessionPath
+    getSessionPath,
+    getSession,
+    removeSession,
+    recordMessage,
+    addControlLog
 } from './lib/webPair.js';
 import { printLog } from './lib/print.js';
 import { writeErrorLog } from './lib/logger.js';
@@ -219,6 +225,7 @@ browser: Browsers.windows('Chrome'),
                 const mek = chatUpdate.messages[0];
                 if (!mek.message)
                     return;
+                recordMessage();
                 mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage')
                     ? mek.message.ephemeralMessage.message
                     : mek.message;
@@ -321,77 +328,60 @@ browser: Browsers.windows('Chrome'),
             }
 
             try {
-
                 updateSession(number, {
                     status: 'generating_code',
                     pairingCode: null,
-                    socket: QasimDev
+                    socket: QasimDev,
+                    error: null
                 });
 
-                printLog(
-                    'info',
-                    `Generating Web Pairing Code for ${number}`
-                );
+                printLog('info', `Generating Web Pairing Code for ${number}`);
 
+                // Wait briefly for the Baileys socket to start connecting.
+                // If the event already fired, the fallback keeps the request moving.
                 await new Promise((resolve) => {
-                        let resolved = false;
+                    let settled = false;
+                    let timer;
+                    const finish = () => {
+                        if (settled) return;
+                        settled = true;
+                        QasimDev.ev.off('connection.update', onConnectionUpdate);
+                        clearTimeout(timer);
+                        resolve();
+                    };
+                    const onConnectionUpdate = ({ connection }) => {
+                        if (connection === 'connecting' || connection === 'open') finish();
+                    };
+                    QasimDev.ev.on('connection.update', onConnectionUpdate);
+                    timer = setTimeout(finish, 5000);
+                });
 
-                        const onConnectionUpdate = ({ connection }) => {
-                            if (!resolved && connection === 'connecting') {
-                                resolved = true;
-                                QasimDev.ev.off('connection.update', onConnectionUpdate);
-                                resolve();
-                            }
-                        };
+                await delay(1000);
 
-                        QasimDev.ev.on('connection.update', onConnectionUpdate);
+                let code = await QasimDev.requestPairingCode(number);
+                if (!code) throw new Error('WhatsApp did not return a pairing code');
 
-                        setTimeout(() => {
-                            if (!resolved) {
-                                resolved = true;
-                                QasimDev.ev.off('connection.update', onConnectionUpdate);
-                                resolve();
-                            }
-                        }, 10000);
-                    });
-
-                    await delay(2000);
-
-                    let code = await QasimDev.requestPairingCode(number);
-
-                code =
-                    code?.match(/.{1,4}/g)?.join('-') || code;
-
-                webSession.pairingCode = code;
-                webSession.status = 'waiting_pairing';
-                webSession.socket = QasimDev;
+                code = String(code).match(/.{1,4}/g)?.join('-') || String(code);
 
                 updateSession(number, {
                     status: 'waiting_pairing',
                     pairingCode: code,
-                    socket: QasimDev
+                    socket: QasimDev,
+                    error: null
                 });
 
-                printLog(
-                    'success',
-                    `Web Pairing Code for ${number}: ${code}`
-                );
+                printLog('success', `Web Pairing Code for ${number}: ${code}`);
 
             } catch (error) {
-
+                const message = error?.message || String(error);
                 updateSession(number, {
                     status: 'pairing_error',
                     pairingCode: null,
                     socket: null,
-                    error: error.message
+                    error: message
                 });
-
-                printLog(
-                    'error',
-                    `Web pairing failed for ${number}: ${error.message}`
-                );
-
-                throw error;
+                printLog('error', `Web pairing failed for ${number}: ${message}`);
+                throw error instanceof Error ? error : new Error(message);
             }
 
         } else if (isRegistered) {
@@ -441,6 +431,7 @@ browser: Browsers.windows('Chrome'),
                 }
 
                 printLog('success', 'Bot connected successfully!');
+                addControlLog('success', `WhatsApp connecté: ${QasimDev.user?.id || number}`);
                 try {
                     const setbioModule = await import('./plugins/setbio.js');
                     const startAutoBio = setbioModule.startAutoBio || setbioModule.default?.startAutoBio;
@@ -495,6 +486,7 @@ browser: Browsers.windows('Chrome'),
                     'error',
                     `🔌 WhatsApp connection closed | code=${statusCode ?? 'unknown'} | error=${disconnectError?.message || disconnectError || 'unknown'}`
                 );
+                addControlLog('error', `WhatsApp déconnecté (${statusCode ?? 'unknown'}): ${disconnectError?.message || 'unknown'}`);
 
                 if (disconnectError?.stack) {
                     console.error(disconnectError.stack);
@@ -551,17 +543,27 @@ browser: Browsers.windows('Chrome'),
         return QasimDev;
     }
     catch (error) {
-        printLog('error', `Error in startQasimDev: ${error.message}`);
+        const message = error?.message || String(error);
+        printLog('error', `Error in startQasimDev: ${message}`);
+
+        if (webSession) {
+            updateSession(number, {
+                status: 'pairing_error',
+                pairingCode: null,
+                socket: null,
+                error: message
+            });
+            // Web pairing must return the real error to /api/pair.
+            throw error instanceof Error ? error : new Error(message);
+        }
+
         if (rl && !rlClosed) {
             rl.close();
             rl = null;
         }
+
         await delay(5000);
-        startQasimDev({
-                        number,
-                        sessionPath,
-                        webSession
-                    });
+        return startQasimDev({ number, sessionPath, webSession });
     }
 }
 /*
@@ -582,6 +584,49 @@ registerBotStarter(async ({
         webSession
     });
 
+});
+
+/* ============================================================
+ * ENTERPRISE CONTROL CENTER ACTIONS
+ * ============================================================ */
+registerBotController({
+    disconnect: async (number) => {
+        const session = getSession(number);
+        if (!session?.socket) throw new Error('Aucune session WhatsApp active pour ce numéro.');
+        const socket = session.socket;
+        updateSession(number, { status: 'disconnecting', pairingCode: null });
+        try {
+            if (typeof socket.logout === 'function') {
+                await socket.logout();
+            } else if (socket.ws?.close) {
+                socket.ws.close();
+            }
+        } finally {
+            removeSession(number);
+            try {
+                if (session.sessionPath && fs.existsSync(session.sessionPath)) {
+                    fs.rmSync(session.sessionPath, { recursive: true, force: true });
+                }
+            } catch (cleanupError) {
+                printLog('warning', `Session cleanup failed: ${cleanupError.message}`);
+            }
+        }
+        return { status: 'disconnected', number };
+    },
+    reload: async (number) => {
+        const session = getSession(number);
+        if (!session?.socket) throw new Error('Aucune session WhatsApp active pour ce numéro.');
+        updateSession(number, { status: 'reconnecting' });
+        const socket = session.socket;
+        if (socket.ws?.close) {
+            socket.ws.close();
+        } else if (typeof socket.end === 'function') {
+            socket.end(new Error('Control Center reload'));
+        } else {
+            throw new Error('Cette session ne supporte pas le rechargement.');
+        }
+        return { status: 'reconnecting', number };
+    }
 });
 
 async function main() {
