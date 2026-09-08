@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#050914">
+  <meta name="theme-color" content="#050914" id="themeColor">
   <meta name="description" content="KOREXIA-MD Premium Enterprise Control Center">
   <title>KØREXIA-MD — Enterprise Control Center</title>
   <link rel="stylesheet" href="style.css">
@@ -43,7 +43,7 @@
       <button class="menu-btn" id="menuBtn">☰</button>
       <div class="top-status"><span class="online-dot"></span><strong>Bot en ligne</strong><i></i><span>Uptime : <b>—</b></span></div>
       <div class="page-title"><span id="sectionLabel">Dashboard</span><small>Enterprise Control Center</small></div>
-      <div class="top-actions"><button class="icon-btn">♢</button><button class="icon-btn">☾</button><div class="profile"><span>K</span><div><strong>KØREXIA-MD 👑</strong><small>Owner</small></div></div></div>
+      <div class="top-actions"><button class="icon-btn" title="Notifications" aria-label="Notifications">♢</button><button class="icon-btn theme-toggle" id="themeToggle" title="Changer le thème" aria-label="Changer le thème">☾</button><div class="profile"><span>K</span><div><strong>KØREXIA-MD 👑</strong><small>Owner</small></div></div></div>
       <div class="status-pill"><span class="online-dot"></span><span>Online</span></div>
     </header>
 
@@ -94,7 +94,7 @@
 
     <section class="section" id="logs"><div class="section-heading"><span class="eyebrow">SYSTEM</span><h1>Logs</h1><p>Activité et diagnostics du système.</p></div><div class="panel terminal"><div class="terminal-head"><span></span><span></span><span></span><small>KØREXIA-MD SYSTEM LOG</small></div><div class="terminal-body" id="logsBody"><p><i>[INFO]</i> Chargement...</p></div></div></section>
 
-    <section class="section" id="settings"><div class="section-heading"><span class="eyebrow">CONFIGURATION</span><h1>Settings</h1><p>Paramètres généraux de l'interface.</p></div><div class="panel settings-list"><div><div><strong>Dark interface</strong><small>Use the enterprise dark theme.</small></div><label class="switch"><input type="checkbox" checked id="darkMode"><span></span></label></div><div><div><strong>Animations</strong><small>Enable interface transitions.</small></div><label class="switch"><input type="checkbox" checked id="animations"><span></span></label></div><div><div><strong>System status</strong><small>Display service status indicators.</small></div><span class="healthy">● Active</span></div></div></section>
+    <section class="section" id="settings"><div class="section-heading"><span class="eyebrow">CONFIGURATION</span><h1>Settings</h1><p>Personnalisez l'apparence du Control Center.</p></div><div class="panel settings-list"><div><div><strong>Apparence</strong><small id="themeDescription">Thème sombre Enterprise</small></div><div class="theme-choice"><button type="button" class="theme-choice-btn active" id="darkThemeBtn">☾ Sombre</button><button type="button" class="theme-choice-btn" id="lightThemeBtn">☀ Clair</button></div></div><div><div><strong>Animations</strong><small>Enable interface transitions.</small></div><label class="switch"><input type="checkbox" checked id="animations"><span></span></label></div><div><div><strong>System status</strong><small>Display service status indicators.</small></div><span class="healthy">● Active</span></div></div></section>
 
     <footer>KØREXIA-MD V10 Enterprise <span>•</span> WhatsApp Bot Control Center</footer>
   </main>

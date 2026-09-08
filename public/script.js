@@ -227,8 +227,31 @@ async function sessionAction(endpoint) {
 $('#disconnectBtn')?.addEventListener('click', () => sessionAction('/api/session/disconnect'));
 $('#reloadBtn')?.addEventListener('click', () => sessionAction('/api/session/reload'));
 
+function applyTheme(theme, notify = false) {
+  const light = theme === 'light';
+  document.body.classList.toggle('light', light);
+  localStorage.setItem('korexia-theme', light ? 'light' : 'dark');
+  const toggle = $('#themeToggle');
+  if (toggle) {
+    toggle.textContent = light ? '☀' : '☾';
+    toggle.title = light ? 'Passer au mode sombre' : 'Passer au mode clair';
+    toggle.setAttribute('aria-label', toggle.title);
+  }
+  const meta = $('#themeColor');
+  if (meta) meta.setAttribute('content', light ? '#f4f7fb' : '#050914');
+  const desc = $('#themeDescription');
+  if (desc) desc.textContent = light ? 'Thème clair' : 'Thème sombre Enterprise';
+  $('#darkThemeBtn')?.classList.toggle('active', !light);
+  $('#lightThemeBtn')?.classList.toggle('active', light);
+  if (notify) showToast(light ? 'Mode clair activé.' : 'Mode sombre activé.');
+}
+
+const savedTheme = localStorage.getItem('korexia-theme');
+applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+$('#themeToggle')?.addEventListener('click', () => applyTheme(document.body.classList.contains('light') ? 'dark' : 'light', true));
+$('#darkThemeBtn')?.addEventListener('click', () => applyTheme('dark', true));
+$('#lightThemeBtn')?.addEventListener('click', () => applyTheme('light', true));
 $('#animations')?.addEventListener('change', event => document.body.style.setProperty('--transition-speed', event.target.checked ? '.2s' : '0s'));
-$('#darkMode')?.addEventListener('change', event => { if (!event.target.checked) { event.target.checked = true; showToast('Le Control Center utilise le thème Enterprise.'); } });
 
 window.addEventListener('load', () => {
   refreshAll();
