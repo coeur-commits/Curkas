@@ -1,16 +1,17 @@
 {
   "rewrites": [
-    {
-      "source": "/api/pair",
-      "destination": "http://fi7.bot-hosting.net:20100/api/pair"
-    },
-    {
-      "source": "/api/pair/status/:number",
-      "destination": "http://fi7.bot-hosting.net:20100/api/pair/status/:number"
-    },
-    {
-      "source": "/health",
-      "destination": "http://fi7.bot-hosting.net:20100/health"
-    }
+    { "source": "/api/pair", "destination": "http://fi7.bot-hosting.net:20100/api/pair" },
+    { "source": "/api/pair/status/:number", "destination": "http://fi7.bot-hosting.net:20100/api/pair/status/:number" },
+    { "source": "/api/dashboard", "destination": "http://fi7.bot-hosting.net:20100/api/dashboard" },
+    { "source": "/api/sessions", "destination": "http://fi7.bot-hosting.net:20100/api/sessions" },
+    { "source": "/api/session/disconnect", "destination": "http://fi7.bot-hosting.net:20100/api/session/disconnect" },
+    { "source": "/api/session/reload", "destination": "http://fi7.bot-hosting.net:20100/api/session/reload" },
+    { "source": "/api/groups", "destination": "http://fi7.bot-hosting.net:20100/api/groups" },
+    { "source": "/api/commands", "destination": "http://fi7.bot-hosting.net:20100/api/commands" },
+    { "source": "/api/commands/:name/toggle", "destination": "http://fi7.bot-hosting.net:20100/api/commands/:name/toggle" },
+    { "source": "/api/security", "destination": "http://fi7.bot-hosting.net:20100/api/security" },
+    { "source": "/api/logs", "destination": "http://fi7.bot-hosting.net:20100/api/logs" },
+    { "source": "/api/diagnostics", "destination": "http://fi7.bot-hosting.net:20100/api/diagnostics" },
+    { "source": "/health", "destination": "http://fi7.bot-hosting.net:20100/health" }
   ]
 }
